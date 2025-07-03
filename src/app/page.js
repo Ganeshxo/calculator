@@ -9,6 +9,7 @@ const i = Instrument_Sans({weight :["500"],display:"swap",subsets:['latin']});
 const p = Prompt({weight :["600"],display:"swap",subsets:['latin']});
 function Page() {
     const [darkMode,setDarkMode] = useState(false);
+    const isMobile = typeof window !== "undefined" && /Mobi|Android/i.test(navigator.userAgent);
     const toggleTheme = ()=> {
       setDarkMode(to => !to);
       inputRef.current?.focus();
@@ -99,7 +100,7 @@ function Page() {
     <div className={`w-screen h-screen transition-colors duration-700 ${darkMode ? "bg-zinc-900 text-white" : "bg-slate-100 text-black"}`}>
       <h1 className={`${c.className} text-2xl md:text-3xl pt-36 text-center uppercase duration-700`}>Calculator<span className='ml-2'><button className={`${darkMode ? " text-yellow-300":"text-violet-800 bg-slate-300"} cursor-pointer px-4 py-1 rounded-full border-2 border-zinc-700 text-lg transition`} onClick={toggleTheme}>{darkMode ? <IoSunny/> : <IoMoon/>}</button></span></h1>
       <motion.div initial={{opacity:0}} whileInView={{opacity:1,y:-100}} transition={{duration:1}} className={`w-3/4 sm:w-2xs md:w-80 h-1/2 mx-auto mt-32 p-5 rounded-xl transition-colors duration-700 ${darkMode ? "bg-zinc-800 shadow-[1px_1px_10px_9px_#383838]":"bg-slate-300 shadow-[1px_1px_10px_9px_#ababab]"}`}>
-        <motion.input type='text' animate={input === "Error" ? { x: [0, -10, 10, -10, 10, 0] } : {}} transition={{ duration: 0.4 }} ref={inputRef} value={input} onKeyDown={handleKeys} onChange={(e)=> { const value = e.target.value; isResult.current = false; setInput((prev)=>(prev === "Error" ? "" : value))}} className={`${i.className} ${darkMode ? "border-zinc-700 shadow-[inset_1px_1px_5px_3px_#5e5e5e]":"border-slate-500 shadow-[inset_1px_1px_5px_3px_#ababab]"} px-4 border-4 rounded-xl w-full h-20 overflow-x-auto whitespace-nowrap outline-none text-end text-3xl ${input === "Error" ? "text-red-600" : (isResult.current ? "text-blue-600" : "")}`}/>
+        <motion.input type='text' readOnly={isMobile} animate={input === "Error" ? { x: [0, -10, 10, -10, 10, 0] } : {}} transition={{ duration: 0.4 }} ref={inputRef} value={input} onKeyDown={handleKeys} onChange={(e)=> { const value = e.target.value; isResult.current = false; setInput((prev)=>(prev === "Error" ? "" : value))}} className={`${i.className} ${darkMode ? "border-zinc-700 shadow-[inset_1px_1px_5px_3px_#5e5e5e]":"border-slate-500 shadow-[inset_1px_1px_5px_3px_#ababab]"} px-4 border-4 rounded-xl w-full h-20 overflow-x-auto whitespace-nowrap outline-none text-end text-3xl ${input === "Error" ? "text-red-600" : (isResult.current ? "text-blue-600" : "")}`}/>
         <div className={`${c.className} grid grid-cols-4 grid-rows-5 items-center justify-items-center h-3/4 mt-6 text-xl gap-3 text-white`}>
         <button type='button' className={`${p.className} w-10 lg:w-12 h-10 lg:h-12 hover:bg-slate-500 bg-slate-600 text-red-500 rounded-full cursor-pointer active:scale-90 transition-transform duration-100`} onClick={handleClear}>C</button>
         <button type='button' className='w-10 lg:w-12 h-10 lg:h-12 hover:bg-slate-500 bg-slate-600 text-lime-400 rounded-full cursor-pointer active:scale-90 transition-transform duration-100' onClick={handleClick}>%</button>
